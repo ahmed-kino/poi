@@ -47,7 +47,7 @@ class Command(BaseCommand):
         def process_row(row):
             try:
                 poi = PointOfInterest.objects.create(
-                    poi_id=row['poi_id'],
+                    poi_external_id=row['poi_id'],
                     poi_name=row['poi_name'],
                     poi_category=row['poi_category'],
                     poi_latitude=float(row['poi_latitude']),
@@ -56,7 +56,9 @@ class Command(BaseCommand):
                 )
                 self.stdout.write(self.style.SUCCESS(f'Imported PoI: {poi}'))
             except Exception as e:
-                logging.warning(f'Invalid data: {e}')
+                error_message = f'Invalid data: {e} --> Row: {row}'
+                self.stdout.write(self.style.ERROR(error_message))
+                logging.warning(error_message)
 
         with ThreadPoolExecutor() as executor:
             executor.map(process_row, rows)
@@ -77,7 +79,7 @@ class Command(BaseCommand):
                     )
                     self.stdout.write(self.style.SUCCESS(f'Imported PoI: {poi}'))
                 except Exception as e:
-                    logging.warning(f'Invalid data: {e}')
+                    logging.warning(f'Invalid data: {e} --> Item: {item}')
 
     def import_xml(self, file_path):
         tree = ET.parse(file_path)
@@ -94,4 +96,4 @@ class Command(BaseCommand):
                 )
                 self.stdout.write(self.style.SUCCESS(f'Imported PoI: {poi}'))
             except Exception as e:
-                logging.warning(f'Invalid data: {e}')
+                logging.warning(f'Invalid data: {e} --> Item: {item}')
