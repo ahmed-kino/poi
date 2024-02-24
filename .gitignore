@@ -1,0 +1,8 @@
+.vscode
+**/__pycache__/
+**/logs/logs.txt
+**.envrc
+
+**/data/
+**/**.log
+**/**.txt
