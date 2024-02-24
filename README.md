@@ -7,8 +7,7 @@
 ### Running the API
 
 * change directory to the repo `$ cd poi_project`
-
-
+* Run `cp .envrc.example .envrc`
 * Run `$ make compose` to run the server
 
 ### Run migrations
@@ -25,4 +24,7 @@
 * Run `make clean` to reset the database **NOTE that this command will remove `*/migrations` directories from the code**
 
 
-### Processing data
+## Import data
+
+* Run `make shell` to execute into the container
+* Run `./manage.py import_poi_data /path/to/file1.csv /path/to/file2.json /path/to/file3.xml --log_file=/path/to/log_file.log` to import desired data into the db
