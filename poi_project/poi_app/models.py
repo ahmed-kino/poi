@@ -9,7 +9,7 @@ class PointOfInterest(models.Model):
     poi_longitude = models.FloatField(blank=True, null=True)
     poi_ratings = models.TextField(blank=True, null=True)
 
-    # Additional fields for JSON and XML
+    # Additional fields for JSON
     poi_description = models.TextField(blank=True, null=True, db_index=True)
 
     # Additional fields for external ID and average rating
@@ -21,7 +21,7 @@ class PointOfInterest(models.Model):
     def save(self, *args, **kwargs):
         if self.poi_ratings:
             try:
-                ratings = [float(rating) for rating in  self.poi_ratings.strip('{}').split(',')]
+                ratings = [float(rating) for rating in  self.poi_ratings.strip().strip('{}[]').split(',')]
                 avg_rating = sum(ratings) / len(ratings) if ratings else None
                 self.avg_rating = avg_rating
             except Exception as e:

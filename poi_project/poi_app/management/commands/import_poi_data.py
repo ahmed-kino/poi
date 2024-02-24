@@ -69,17 +69,19 @@ class Command(BaseCommand):
             for item in data:
                 try:
                     poi = PointOfInterest.objects.create(
-                        poi_id=item['id'],
+                        poi_external_id=item['id'],
                         poi_name=item['name'],
                         poi_category=item['category'],
-                        description=item.get('description'),
+                        poi_description=item.get('description'),
                         poi_latitude=float(item['coordinates']['latitude']),
                         poi_longitude=float(item['coordinates']['longitude']),
-                        poi_ratings=json.dumps(item['ratings'])
+                        poi_ratings=str(item['ratings'])
                     )
                     self.stdout.write(self.style.SUCCESS(f'Imported PoI: {poi}'))
                 except Exception as e:
-                    logging.warning(f'Invalid data: {e} --> Item: {item}')
+                    error_message = f'Invalid data: {e} --> Item: {item}'
+                    self.stdout.write(self.style.ERROR(error_message))
+                    logging.warning(error_message)
 
     def import_xml(self, file_path):
         tree = ET.parse(file_path)
@@ -87,7 +89,7 @@ class Command(BaseCommand):
         for item in root.findall('DATA_RECORD'):
             try:
                 poi = PointOfInterest.objects.create(
-                    poi_id=item.find('pid').text,
+                    poi_external_id=item.find('pid').text,
                     poi_name=item.find('pname').text,
                     poi_category=item.find('pcategory').text,
                     poi_latitude=float(item.find('platitude').text),
@@ -96,4 +98,6 @@ class Command(BaseCommand):
                 )
                 self.stdout.write(self.style.SUCCESS(f'Imported PoI: {poi}'))
             except Exception as e:
-                logging.warning(f'Invalid data: {e} --> Item: {item}')
+                error_message = f'Invalid data: {e} --> Item: {item}'
+                self.stdout.write(self.style.ERROR(error_message))
+                logging.warning(error_message)
