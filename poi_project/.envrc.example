@@ -1,0 +1,8 @@
+export APP_NAME="poi"
+
+# PostgreSQL
+export POSTGRES_DB="${APP_NAME}"
+export POSTGRES_USER="${APP_NAME}"
+export POSTGRES_PASSWORD="admin"
+export POSTGRES_PORT="5432"
+export POSTGRES_HOST="postgres"

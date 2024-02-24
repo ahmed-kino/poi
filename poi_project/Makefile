@@ -1,6 +1,8 @@
+VERSION ?= ${newrev}
 NAME ?= poi
 PGUSER ?= ${NAME}
 PGPASSWORD ?= admin
+FULL_NAME = ${NAME}:${VERSION}
 DOCKER_REGISTRY = local
 
 
@@ -25,11 +27,16 @@ init:
 	./manage.py makemigrations
 	./manage.py migrate
 
+
 compose:
 	docker compose up
 
 shell:
 	docker compose exec poi sh
 
+
 db:
 	docker compose exec postgres sh -c "PGPASSWORD=${PGPASSWORD} psql -U${PGUSER} -d ${NAME}"
+
+db-pgcli:
+	docker compose exec poi sh -c "PGPASSWORD=${PGPASSWORD} pgcli -h postgres -U${PGUSER} -d ${NAME}"
