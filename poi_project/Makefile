@@ -18,6 +18,13 @@ build:
 run:
 	docker run -p 8000:8000 ${DOCKER_REGISTRY}/${NAME}:latest 
 
+fmt: format sort
+
+sort:
+	find . -type f -name \*.py | xargs isort
+
+format:
+	find . -type f -name \*.py | xargs black --skip-string-normalization
 
 clean:
 	rm -rf */migrations
@@ -27,6 +34,8 @@ init:
 	./manage.py makemigrations
 	./manage.py migrate
 
+test:
+	./manage.py test
 
 compose:
 	docker compose up

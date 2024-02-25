@@ -16,6 +16,33 @@
 
 * Run migration `$ make init`
 
+## Create superuser
+
+* Run `$ make shell` to execute into the container
+* Run `./manage.py createsuperuser`
+* You will be prompted to enter the username, email address, and password for the superuser. Follow the prompts to enter this information.
+* Once you have entered the information, the superuser will be created and you will see a message confirming the creation
+* You can now use the superuser credentials to log in to the Django admin site and access all administrative features.
+
+## Format
+
+* Run `make shell` to execute into the container
+* Run format `make format`
+
+## Sort
+
+* Run `make shell` to execute into the container
+* Run sort `make sort`
+
+## Format & Sort
+
+* Run `make shell` to execute into the container
+* Run `make fmt` to format and sort
+
+## Tests
+
+* Run `make shell` to execute into the container
+* Run tests `make test`
 
 ## Reset DB:
 

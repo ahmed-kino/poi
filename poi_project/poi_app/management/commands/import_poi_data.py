@@ -1,17 +1,25 @@
 import csv
 import json
 import logging
+import mimetypes
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
+
 from django.core.management.base import BaseCommand
+
 from poi_app.models import PointOfInterest
-import mimetypes
+
 
 class Command(BaseCommand):
     help = 'Import PoI data from CSV, JSON, and XML files'
 
     def add_arguments(self, parser):
-        parser.add_argument('file_paths', nargs='+', type=str, help='List of paths to the files to import')
+        parser.add_argument(
+            'file_paths',
+            nargs='+',
+            type=str,
+            help='List of paths to the files to import',
+        )
         parser.add_argument('--log_file', type=str, help='Path to the log file')
 
     def handle(self, *args, **kwargs):
@@ -52,7 +60,7 @@ class Command(BaseCommand):
                     poi_category=row['poi_category'],
                     poi_latitude=float(row['poi_latitude']),
                     poi_longitude=float(row['poi_longitude']),
-                    poi_ratings=row['poi_ratings']
+                    poi_ratings=row['poi_ratings'],
                 )
                 self.stdout.write(self.style.SUCCESS(f'Imported PoI: {poi}'))
             except Exception as e:
@@ -75,7 +83,7 @@ class Command(BaseCommand):
                         poi_description=item.get('description'),
                         poi_latitude=float(item['coordinates']['latitude']),
                         poi_longitude=float(item['coordinates']['longitude']),
-                        poi_ratings=str(item['ratings'])
+                        poi_ratings=str(item['ratings']),
                     )
                     self.stdout.write(self.style.SUCCESS(f'Imported PoI: {poi}'))
                 except Exception as e:
@@ -94,7 +102,7 @@ class Command(BaseCommand):
                     poi_category=item.find('pcategory').text,
                     poi_latitude=float(item.find('platitude').text),
                     poi_longitude=float(item.find('plongitude').text),
-                    poi_ratings=item.find('pratings').text
+                    poi_ratings=item.find('pratings').text,
                 )
                 self.stdout.write(self.style.SUCCESS(f'Imported PoI: {poi}'))
             except Exception as e:

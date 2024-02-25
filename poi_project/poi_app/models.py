@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class PointOfInterest(models.Model):
     # Common fields
     poi_external_id = models.CharField(max_length=255, unique=True)
@@ -21,7 +22,10 @@ class PointOfInterest(models.Model):
     def save(self, *args, **kwargs):
         if self.poi_ratings:
             try:
-                ratings = [float(rating) for rating in  self.poi_ratings.strip().strip('{}[]').split(',')]
+                ratings = [
+                    float(rating)
+                    for rating in self.poi_ratings.strip().strip('{}[]').split(',')
+                ]
                 avg_rating = sum(ratings) / len(ratings) if ratings else None
                 self.avg_rating = avg_rating
             except Exception as e:
